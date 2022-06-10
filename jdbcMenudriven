@@ -1,0 +1,169 @@
+package com.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class jdbcMenu {
+	public static void main(String args[]) throws Exception,SQLException
+	{
+		//registering the driver(mysql)
+				Class.forName("com.mysql.cj.jdbc.Driver");	
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hexaware","root","SUDHEER@123");
+				//creation of a statement class
+				Statement st1 = con.createStatement();
+	
+				Scanner scanner = new Scanner(System.in);
+				int choice;
+		        //Creating infinite while loop
+		        while(true) {
+		 
+		            //Creating menu
+		            System.out.println("Press 1 for Selection");
+		            System.out.println("Press 2 for Insertion");
+		            System.out.println("Press 3 for Updation");
+		            System.out.println("Press 4 for Deletion");
+		            System.out.println("Press 5 to Quit\n \n ");
+		 
+		            //Asking user to make choice
+		            System.out.println("Make your choice :");
+		            choice = scanner.nextInt();
+		            
+		            
+		            switch(choice)
+		            {
+		            case 1: 
+		            	System.out.println("Select...\n");
+		            	
+		            	//registering the driver(mysql)
+						Class.forName("com.mysql.cj.jdbc.Driver");	
+						Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/hexaware","root","SUDHEER@123");
+						//creation of a statement class
+						Statement st11 = con1.createStatement();
+		            	
+		            	
+		            	ResultSet rs=st11.executeQuery("select * from employee");
+		            	
+		            	while(rs.next())
+		            	{
+		            		System.out.println(rs.getInt(1));
+		            		System.out.println(rs.getString(2));
+		            		System.out.println(rs.getString(3));
+		            		System.out.println();
+		            	}
+		            	
+		            	rs.close();
+		            	st11.close();
+		            	con1.close();
+		            	
+		            	
+		            	break;
+		            	
+		            case 2:
+		            	System.out.println("Insert");
+		            	
+		            	
+		            	//registering the driver(mysql)
+						Class.forName("com.mysql.cj.jdbc.Driver");	
+						Connection con11 = DriverManager.getConnection("jdbc:mysql://localhost:3306/hexaware","root","SUDHEER@123");
+						//creation of a statement class
+						Statement st111 = con11.createStatement();
+		            	
+		            	int id;
+		            	String name,loc;
+		            	
+		            	System.out.println("Enter the employee_id: ");
+		            	id=scanner.nextInt();
+		            	
+		            	System.out.println("Enter the employee_name: ");
+		            	name=scanner.next();
+		            	
+		            	System.out.println("Enter the employee_location: ");
+		            	loc=scanner.next();
+		      
+		            	
+		            	PreparedStatement stmt=con11.prepareStatement("insert into employee values(?,?,?)");  
+		            	stmt.setInt(1,id);//1 specifies the first parameter in the query  
+		            	stmt.setString(2,name);
+		            	stmt.setString(3,loc);
+		            	int i=stmt.executeUpdate();  
+		            	System.out.println(i+" records inserted");  
+		            	System.out.println("Successfully Inserted");
+		            	
+		            	break;
+		            	
+		 
+		            case 3:
+		            	System.out.println("Update");
+		            	
+		            	
+		            	//registering the driver(mysql)
+						Class.forName("com.mysql.cj.jdbc.Driver");	
+						Connection con111 = DriverManager.getConnection("jdbc:mysql://localhost:3306/hexaware","root","SUDHEER@123");
+						//creation of a statement class
+						Statement st1111 = con111.createStatement();
+		            	
+					
+						System.out.println("Enter the id of the employee? ");
+						int eid=scanner.nextInt();
+						
+						//System.out.println("Enter the field you want to update? ");
+						//String field=scanner.next();
+						
+						System.out.println("Enter the updated value? ");
+					    String val=scanner.next();
+						
+						
+						//location to anagara
+					    PreparedStatement p=con111.prepareStatement("update employee set location = (?) where id = (?)");  
+		            	 
+		            	p.setString(1,val);
+		            	p.setInt(2,eid);
+		            	p.executeUpdate();  
+		          
+		            	 
+		            	System.out.println("Successfully Updated");
+		            	
+						
+		            	break;
+		            case 4:
+		            	System.out.println("Delete");
+		            	
+		            	//registering the driver(mysql)
+						Class.forName("com.mysql.cj.jdbc.Driver");	
+						Connection con1111 = DriverManager.getConnection("jdbc:mysql://localhost:3306/hexaware","root","SUDHEER@123");
+						//creation of a statement class
+						Statement st11111 = con1111.createStatement();
+		            	
+					
+						System.out.println("Enter the id of the employee? ");
+						int empid=scanner.nextInt();
+						
+						
+						 PreparedStatement p2=con1111.prepareStatement("Delete from employee where id=(?) ");  
+		            	 
+			             p2.setInt(1,empid);
+			             p2.executeUpdate();  
+			             System.out.println("Successfully Deleted");
+		            	break;
+		            case 5:
+		            	System.out.println("Thank you...");
+		            	System.exit(0);
+		            	break;
+		            default:
+		            	System.out.println("Stay connected...");
+		            }
+		          
+		            	
+		            
+		            
+		        }
+				
+	}
+	
+
+}
